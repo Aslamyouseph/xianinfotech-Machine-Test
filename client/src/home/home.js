@@ -15,7 +15,9 @@ function Home() {
     <div>
       <div className="button-container flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
         <div className="text-center space-y-6">
-          <h1 className="text-3xl text-white font-bold">Welcome to chatApp</h1>
+          <h1 className="text-3xl text-white font-bold">
+            Welcome to Client Feedback Portal{" "}
+          </h1>
           <div className="space-x-4">
             <button
               onClick={handleSignup}

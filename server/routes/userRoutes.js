@@ -1,7 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const userHelpers = require("../helpers/userHelpers"); // Accessing user-helpers file
-
+// checking the user is logged or not .This block is used to check the user is logged or not when the control is came from the frontend
+router.get("/checksection", (req, res) => {
+  // console.log("Session after checksection:", req.session.user);
+  if (req.session.user) {
+    return res.status(200).json({ isLoggedIn: true, user: req.session.user });
+  } else {
+    return res.status(200).json({ isLoggedIn: false });
+  }
+});
 // Signup operation
 router.post("/signup", async (req, res) => {
   try {
