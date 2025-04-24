@@ -11,6 +11,9 @@ import EditProfile from "./UserCompounts/userPage/editProfile";
 import FeedBack from "./UserCompounts/userPage/FeedBack";
 //TODO:Admin Pages Imported
 import AdminHome from "./AdminCompounts/AdminPage/AdminHome";
+import Respond from "./AdminCompounts/AdminPage/viewRespond";
+import RespondToFeedback from "./AdminCompounts/AdminPage/RespondToFeedback";
+
 function App() {
   const [data, setData] = useState(null);
 
@@ -44,6 +47,8 @@ function App() {
         <Route path="/FeedBack" element={<FeedBack />} />
         {/* //TODO: Admin Pages */}
         <Route path="/AdminHome" element={<AdminHome />} />
+        <Route path="/Respond" element={<Respond />} />
+        <Route path="/RespondToFeedback" element={<RespondToFeedback />} />
       </Routes>
     </div>
   );
