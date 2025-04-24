@@ -7,7 +7,7 @@ import Login from "./userPage/login";
 import Signup from "./userPage/signup";
 import Profile from "./userPage/profile";
 import EditProfile from "./userPage/editProfile";
-import ChatApp from "./userPage/chatApp";
+import FeedBack from "./userPage/FeedBack";
 function App() {
   const [data, setData] = useState(null);
 
@@ -37,7 +37,7 @@ function App() {
         {/*creating a route signup*/}
         <Route path="/signup" element={<Signup />} />{" "}
         {/*creating a route chatApp page*/}
-        <Route path="/chatApp" element={<ChatApp />} />{" "}
+        <Route path="/FeedBack" element={<FeedBack />} />{" "}
       </Routes>
     </div>
   );
