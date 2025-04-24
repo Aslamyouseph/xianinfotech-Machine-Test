@@ -22,16 +22,14 @@ const MessageSchema = new mongoose.Schema(
       ],
     },
     rating: {
-      type: String,
-      enum: ["Excellent", "Good", "Average", "Poor", "Very Poor"],
+      type: Number,
+      enum: [5, 4, 3, 2, 1],
       required: true,
     },
     message: {
       type: String,
       required: true,
       trim: true,
-      minlength: 10,
-      maxlength: 1000,
     },
   },
   {
