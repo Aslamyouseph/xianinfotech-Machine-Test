@@ -85,10 +85,9 @@ const FeedbackForm = () => {
 
   return (
     <div className="feedback-container">
-      {error && <p className="error-message">{error}</p>}
-      {successMessage && <p className="success-message">{successMessage}</p>}
-
       <form className="feedback-form" onSubmit={handleSubmit}>
+        {error && <p className="error-message">{error}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
         <h1>Client Feedback Portal</h1>
 
         <label>Name:</label>

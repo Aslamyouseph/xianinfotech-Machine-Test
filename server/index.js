@@ -5,6 +5,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const connectDB = require("./DB-configiration/DB-connection");
 const UserRouter = require("./routes/userRoutes");
+const AdminRoute = require("./routes/AdminRoute");
 // Connect to MongoDB
 connectDB();
 
@@ -41,7 +42,8 @@ app.use(
 );
 
 // Routes
-app.use("/api/user", UserRouter);
+app.use("/api/user", UserRouter); // User Router
+// app.use("/api/admin", AdminRoute); // This is the AdminRouter
 
 // Debugging: Check if session is working
 app.get("/api/session", (req, res) => {
