@@ -5,9 +5,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const connectDB = require("./DB-configiration/DB-connection");
 const UserRouter = require("./routes/userRoutes");
-const socketIo = require("socket.io");
-const http = require("http");
-
 // Connect to MongoDB
 connectDB();
 

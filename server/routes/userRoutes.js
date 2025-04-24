@@ -149,95 +149,28 @@ router.post("/editprofile", async (req, res) => {
     });
   }
 });
-//TODO: from here onwards the ChatApp operation starting
-
-//Create Conversation operation
-router.post("/conversation", async (req, res) => {
+// Storing the user feedback in to the database
+router.post("/Feedback", async (req, res) => {
   try {
-    const createConversation = await userHelpers.createConversation(req.body);
+    const { name, email, rating, message } = req.body;
+    if (!name || !email || !rating || !message) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required!",
+      });
+    }
+    await userHelpers.doFeedback(req.body);
     res.status(200).json({
       success: true,
-      message: "Conversation created successfully",
-      user: createConversation,
+      message: "Your Feedback has been submitted successfully",
     });
   } catch (error) {
-    console.error("Error creating conversation:", error);
+    console.error("F error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to create conversation. Please try again.",
+      message: "Failed to submit feedback!",
+      error: error.message,
     });
   }
-});
-
-//get conversation operation
-router.get("/conversation/:userId", async (req, res) => {
-  try {
-    const getConversation = await userHelpers.getConversation(
-      req.params.userId
-    );
-    res.status(200).json({
-      success: true,
-      message: "Conversation fetched successfully",
-      user: getConversation,
-    });
-  } catch (error) {
-    console.error("Error fetching conversation:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch conversation. Please try again.",
-    });
-  }
-  //Send Message
-  router.post("/message", async (req, res) => {
-    try {
-      const sendMessage = await userHelpers.sendMessage(req.body);
-      res.status(200).json({
-        success: true,
-        message: "Message sent successfully",
-        user: sendMessage,
-      });
-    } catch (error) {
-      console.error("Error sending message:", error);
-      res.status(500).json({
-        success: false,
-        message: "Failed to send message. Please try again.",
-      });
-    }
-  });
-
-  // get the message
-  router.get("/message/:conversationId", async (req, res) => {
-    try {
-      const getMessage = await userHelpers.getMessage(req.params);
-      res.status(200).json({
-        success: true,
-        message: "Message fetched successfully",
-        user: getMessage,
-      });
-    } catch (error) {
-      console.error("Error fetching message:", error);
-      res.status(500).json({
-        success: false,
-        message: "Failed to fetch message. Please try again.",
-      });
-    }
-  });
-  // Get All Users Except Self
-  router.get("/users/:userId", async (req, res) => {
-    try {
-      const getAllUsers = await userHelpers.getAllUsers(req.params.userId);
-      res.status(200).json({
-        success: true,
-        message: "Users fetched successfully",
-        user: getAllUsers,
-      });
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      res.status(500).json({
-        success: false,
-        message: "Failed to fetch users. Please try again.",
-      });
-    }
-  });
 });
 module.exports = router;

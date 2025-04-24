@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 const UserModel = require("../DB-Models/User-Account");
-const ConversationModel = require("../DB-Models/Conversations");
-const MessageModel = require("../DB-Models/Message");
+const FeedbackModel = require("../DB-Models/Message");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb"); // used to convert the string to ObjectId
 const { reject } = require("promise");
-const jwt = require("jsonwebtoken");
 
 module.exports = {
   // used for the signup operation
@@ -74,7 +72,6 @@ module.exports = {
     });
   },
   //updating or editing the user profile details
-  // Helper function for editing user details
   editUserDetails: (userDetails) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -92,100 +89,16 @@ module.exports = {
       }
     });
   },
-  //TODO: from here onwards the ChatApp operation starting
-  createConversation: async (conversationData) => {
-    const { senderId, receiverId } = conversationData;
-    try {
-      const newConversation = new ConversationModel({
-        members: [senderId, receiverId],
-      });
-      const result = await newConversation.save();
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  },
-  //get conversation operation
-  getConversation: async (userId) => {
-    try {
-      const conversations = await ConversationModel.find({
-        members: { $in: [userId] },
-      }).populate("members");
-      return conversations;
-    } catch (error) {
-      throw error;
-    }
-  },
-  //Send Message
-  sendMessage: async (messageData) => {
-    try {
-      const {
-        conversationId,
-        senderId,
-        message,
-        receiverId = "",
-      } = messageData;
-      if (conversationId === "new" && receiverId) {
-        const newConversation = new ConversationModel({
-          members: [senderId, receiverId],
-        });
-        await newConversation.save();
-        const newMessage = new MessageModel({
-          conversationId: newConversation._id,
-          senderId,
-          message,
-        });
-        await newMessage.save();
-        return newMessage;
+  // storing the user Feedback
+  doFeedback: (FeedBackData) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const newFeedBack = new FeedbackModel(FeedBackData);
+        const result = await newFeedBack.save(); // Save to database
+        resolve({ user: result });
+      } catch (error) {
+        reject(error);
       }
-      const newMessage = new MessageModel({
-        conversationId,
-        senderId,
-        message,
-      });
-      await newMessage.save();
-      return newMessage;
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("Server Error");
-    }
-  },
-  //get message operation
-  getMessage: async (messageData) => {
-    try {
-      const { conversationId } = messageData;
-      const messages = await MessageModel.find({
-        conversationId,
-      });
-      const messageUserData = await Promise.all(
-        MessageModel.map(async (message) => {
-          const user = await UserModel.findById(message.senderId);
-          return {
-            user: { id: user._id, email: user.email, fullName: user.fullName },
-            message: message.message,
-          };
-        })
-      );
-
-      return messages;
-    } catch (error) {
-      throw error;
-    }
-  },
-  //Get All Users Except Self
-  getAllUsers: async (userId) => {
-    try {
-      const users = await UserModel.find({ _id: { $ne: userId } });
-      const usersData = UserModel.map((user) => ({
-        user: {
-          email: user.email,
-          fullName: user.fullName,
-          receiverId: user._id,
-        },
-      }));
-      return usersData;
-    } catch (error) {
-      throw error;
-    }
+    });
   },
 };

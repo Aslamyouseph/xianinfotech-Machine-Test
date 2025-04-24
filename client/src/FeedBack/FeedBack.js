@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"; // Ensure React is imported
+import React, { useEffect, useState } from "react";
 import "./FeedBack.css";
 
 const FeedbackForm = () => {
@@ -8,10 +8,12 @@ const FeedbackForm = () => {
     rating: "",
     message: "",
   });
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [sessionName, setSessionName] = useState("");
-  const [sessionEmail, setSessionEmail] = useState("");
-  // Check login status
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Fetch session info
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -22,8 +24,12 @@ const FeedbackForm = () => {
         const data = await res.json();
         if (data.isLoggedIn) {
           setIsLoggedIn(true);
-          setSessionName(data.user.name);
-          setSessionEmail(data.user.email);
+          // Update formData with session user
+          setFormData((prev) => ({
+            ...prev,
+            name: data.user.name,
+            email: data.user.email,
+          }));
         }
       } catch (error) {
         console.error("Error checking login status:", error);
@@ -31,36 +37,67 @@ const FeedbackForm = () => {
     };
     checkLoginStatus();
   }, []);
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Feedback submitted:", formData);
-    alert("Thank you for your feedback!");
-    setFormData({
-      name: "",
-      email: "",
-      rating: "",
-      message: "",
-    });
+
+    if (!formData.rating || !formData.message) {
+      setError("Please fill all required fields.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/user/Feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSuccessMessage("Your Feedback has been submitted successfully");
+        setFormData({
+          name: formData.name,
+          email: formData.email,
+          rating: "",
+          message: "",
+        });
+        setError("");
+      } else {
+        setError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Failed to submit feedback. ");
+    }
   };
 
   return (
     <div className="feedback-container">
+      {error && <p className="error-message">{error}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
+
       <form className="feedback-form" onSubmit={handleSubmit}>
-        <h1> Client Feedback Portal</h1>
+        <h1>Client Feedback Portal</h1>
 
         <label>Name:</label>
         <input
           type="text"
           name="name"
-          value={sessionName}
+          value={formData.name}
           onChange={handleChange}
+          readOnly
           required
         />
 
@@ -68,8 +105,9 @@ const FeedbackForm = () => {
         <input
           type="email"
           name="email"
-          value={sessionEmail}
+          value={formData.email}
           onChange={handleChange}
+          readOnly
           required
         />
 
@@ -93,7 +131,6 @@ const FeedbackForm = () => {
           name="message"
           value={formData.message}
           onChange={handleChange}
-          rows="4"
           required
         ></textarea>
 
