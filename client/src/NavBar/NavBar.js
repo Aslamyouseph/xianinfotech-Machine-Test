@@ -39,7 +39,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Brand Name */}
         <Link to="/" className="text-2xl font-bold tracking-wide">
-          chat<span className="text-yellow-400">App</span>
+          Client <span className="text-yellow-400">Feedback Portal</span>
         </Link>
         {/* TODO:Desktop Navigation  setup */}
         <ul className="hidden md:flex space-x-6 text-lg">

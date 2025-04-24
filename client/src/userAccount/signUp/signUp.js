@@ -32,7 +32,7 @@ const SignUp = () => {
         alert("Signup Successful!");
         //clear the form data after the signup
         setFormData({ name: "", email: "", password: "" });
-        navigate("/chatApp"); // after the signup navigate to chatApp page(This is used for the navigation)
+        navigate("/FeedBack"); // after the signup navigate to chatApp page(This is used for the navigation)
       } else {
         alert(data.message || "Signup failed. Try again.");
       }

@@ -71,7 +71,7 @@ function EditProfile() {
         setSuccess("Account details updated successfully!");
         setError("");
         setTimeout(() => {
-          navigate("/chatApp"); // After updating, navigate to the chat app
+          navigate("/FeedBack"); // After updating, navigate to the chat app
         }, 1000);
       } else {
         setError(data.message || "Edit failed. Try again.");

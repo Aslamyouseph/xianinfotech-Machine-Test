@@ -14,15 +14,6 @@ connectDB();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Create HTTP Server
-const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: "http://localhost:3000", // Allow frontend origin
-    credentials: true, // Allow credentials (cookies)
-  },
-});
-
 // Middleware
 app.use(
   cors({
@@ -51,53 +42,6 @@ app.use(
     },
   })
 );
-
-// Socket.io Setup
-let users = [];
-io.on("connection", (socket) => {
-  console.log("User connected", socket.id);
-
-  socket.on("addUser", (userId) => {
-    if (!users.find((user) => user.userId === userId)) {
-      users.push({ userId, socketId: socket.id });
-      io.emit("getUsers", users);
-    }
-  });
-
-  socket.on(
-    "sendMessage",
-    async ({ senderId, receiverId, message, conversationId }) => {
-      const receiver = users.find((user) => user.userId === receiverId);
-      const sender = users.find((user) => user.userId === senderId);
-      const user = require("./DB-Models/User-Account");
-
-      if (receiver) {
-        io.to(receiver.socketId)
-          .to(sender.socketId)
-          .emit("getMessage", {
-            senderId,
-            message,
-            conversationId,
-            receiverId,
-            user: { id: user._id, fullName: user.fullName, email: user.email },
-          });
-      } else {
-        io.to(sender.socketId).emit("getMessage", {
-          senderId,
-          message,
-          conversationId,
-          receiverId,
-          user: { id: user._id, name: user.name, email: user.email },
-        });
-      }
-    }
-  );
-
-  socket.on("disconnect", () => {
-    users = users.filter((user) => user.socketId !== socket.id);
-    io.emit("getUsers", users);
-  });
-});
 
 // Routes
 app.use("/api/user", UserRouter);

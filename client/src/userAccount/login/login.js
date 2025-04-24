@@ -31,7 +31,7 @@ const Login = () => {
         alert("Login Successful!");
         setEmail("");
         setPassword("");
-        navigate("/chatApp");
+        navigate("/FeedBack");
       } else {
         setError(data.message || "Login failed. Try again.");
       }
