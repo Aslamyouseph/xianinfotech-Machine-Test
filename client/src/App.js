@@ -2,12 +2,12 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios"; //This us used to connect the frontend to the backend
 import { Routes, Route, Link, useNavigate } from "react-router-dom"; // This is used to enable routing.
-import Home from "./userPage/home";
-import Login from "./userPage/login";
-import Signup from "./userPage/signup";
-import Profile from "./userPage/profile";
-import EditProfile from "./userPage/editProfile";
-import FeedBack from "./userPage/FeedBack";
+import Home from "./UserCompounts/userPage/home";
+import Login from "./UserCompounts/userPage/login";
+import Signup from "./UserCompounts/userPage/signup";
+import Profile from "./UserCompounts/userPage/profile";
+import EditProfile from "./UserCompounts/userPage/editProfile";
+import FeedBack from "./UserCompounts/userPage/FeedBack";
 function App() {
   const [data, setData] = useState(null);
 

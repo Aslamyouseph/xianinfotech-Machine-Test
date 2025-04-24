@@ -39,6 +39,10 @@ const Login = () => {
       console.error("Error:", error);
       setError("Something went wrong. Please try again.");
     }
+    // Admin login operation (Give a default email and password for admin to login)
+    if (email === "admin@gmail.com" && password === "123123") {
+      navigate("/AdminHome");
+    }
   };
 
   return (
