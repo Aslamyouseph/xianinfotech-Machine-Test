@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./FeedBack.css";
 
 const FeedbackForm = () => {
+  const [feedback, setFeedback] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -82,13 +83,42 @@ const FeedbackForm = () => {
       setError("Failed to submit feedback. ");
     }
   };
+  // Fetch Feedback from the backend
+  useEffect(() => {
+    const fetchFeedbackDetails = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/getFeedBack", {
+          method: "GET",
+          credentials: "include",
+        });
 
+        if (!res.ok) throw new Error("Failed to fetch feedback.");
+
+        const data = await res.json();
+        setFeedback(data.Feedback || []);
+      } catch (err) {
+        console.error("Error:", err);
+        setError("Something went wrong. Please try again.");
+      }
+    };
+
+    fetchFeedbackDetails();
+  }, []);
   return (
     <div className="feedback-container">
       <form className="feedback-form" onSubmit={handleSubmit}>
         {error && <p className="error-message">{error}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
-        <h1>Client Feedback Portal</h1>
+        <h1
+          style={{
+            textAlign: "center",
+            fontFamily: "serif",
+            color: "Red",
+            fontSize: "40px",
+          }}
+        >
+          Client Feedback Portal
+        </h1>
 
         <label>Name:</label>
         <input
@@ -135,6 +165,45 @@ const FeedbackForm = () => {
 
         <button type="submit">Submit</button>
       </form>
+      <br />
+      <br />
+      <br />
+      <br />
+      <h1
+        style={{
+          textAlign: "center",
+          fontFamily: "serif",
+          color: "green",
+          fontSize: "40px",
+        }}
+      >
+        Feedback List
+      </h1>
+      <div className="table-container-News">
+        <br />
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Rating</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            {feedback.map((item, index) => (
+              <tr key={item._id}>
+                <td>{new Date(item.createdAt).toLocaleString()}</td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>⭐ {item.rating}</td>
+                <td>{item.message}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
