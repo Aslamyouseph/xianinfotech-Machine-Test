@@ -1,0 +1,112 @@
+.table-container-Laptop {
+  width: 100%;
+  overflow-x: auto;
+  padding: 20px;
+}
+.Managing-heading {
+  font-size: xx-large;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 600;
+  color: #ff0000;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  font-size: larger;
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+tr:hover {
+  background: #f1f1f1;
+}
+
+img {
+  border-radius: 5px;
+}
+
+button {
+  border: none;
+  padding: 8px 14px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease-in-out;
+}
+
+.delete-btn,
+.update-btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+  text-decoration: none; /* Remove default link underline */
+  display: inline-block;
+}
+
+/* Delete Button */
+.delete-btn {
+  background-color: #ff4d4d; /* Red */
+  color: white;
+  box-shadow: 0 3px 6px rgba(255, 0, 0, 0.2);
+}
+
+.delete-btn:hover {
+  background-color: #cc0000;
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+/* Update Button */
+.update-btn {
+  background-color: #007bff; /* Blue */
+  color: white;
+  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+}
+
+.update-btn:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  th,
+  td {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button {
+    padding: 6px 12px;
+  }
+}
