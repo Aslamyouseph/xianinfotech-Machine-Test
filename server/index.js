@@ -43,7 +43,7 @@ app.use(
 
 // Routes
 app.use("/api/user", UserRouter); // User Router
-// app.use("/api/admin", AdminRoute); // This is the AdminRouter
+app.use("/api/admin", AdminRoute); // This is the AdminRouter
 
 // Debugging: Check if session is working
 app.get("/api/session", (req, res) => {
