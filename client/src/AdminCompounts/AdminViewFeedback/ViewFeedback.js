@@ -6,7 +6,7 @@ function ViewFeedback() {
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
 
-  // Fetch Feedback from the backend
+  // Fetch Feedback from the backend  Api
   useEffect(() => {
     const fetchFeedbackDetails = async () => {
       try {
