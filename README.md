@@ -24,11 +24,11 @@ This app allows users to submit feedback, view others’ feedback live, and inte
 ##  ⚙️ Installation
 1 - Clone the repository:
 
-git clone https://github.com/Aslamyouseph/-EBHOOM-Machine-Test.git
+git clone https://github.com/Aslamyouseph/xianinfotech-Machine-Test.git
 
 2 - Navigate to the project directory:
 
-cd MT
+cd Test
 
 3 - Install dependencies:
 
@@ -49,3 +49,6 @@ npm start
 
 The app should now be running at http://localhost:3000.
 
+---
+## Admin Email :- admin@gmail.com
+## Admin Password :- 123123
