@@ -26,5 +26,23 @@ module.exports = {
     } catch (error) {
       throw error;
     }
+  }, //Response to the feedback
+  updateFeedback: async (id, feedbackDetails) => {
+    try {
+      const updatedFeedback = await FeedbackModel.findByIdAndUpdate(
+        id,
+        { response: feedbackDetails },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedFeedback) {
+        throw new Error("Feedback not found");
+      }
+
+      return updatedFeedback;
+    } catch (error) {
+      console.error("Error updating feedback response:", error);
+      throw error;
+    }
   },
 };

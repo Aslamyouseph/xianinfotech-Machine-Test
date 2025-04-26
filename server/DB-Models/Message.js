@@ -31,9 +31,14 @@ const MessageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    response: {
+      type: String,
+      trim: true,
+      default: null, // Can be left empty until a response is provided
+    },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt timestamps
+    timestamps: true,
   }
 );
 
