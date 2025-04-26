@@ -1,18 +1,15 @@
-# Real-Time Chat Application 🚀  
+# Real-Time Feedback Application  🚀  
 
-A real-time chat application built using the **MERN (MongoDB, Express.js, React.js, Node.js) stack**.  
-This app allows users to chat in real-time, share media, and receive notifications.
+A real-time feedback application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack.
+This app allows users to submit feedback, view others’ feedback live, and interact instantly using real-time technology.
 
 ---
 
 ## 📌 Features  
-✅ **User Authentication** – Secure login & registration
-✅ **Real-Time Messaging** – One-to-one chat using Socket.IO  
-✅ **Online/Offline Status** – Shows user status  
-✅ **"Typing..." Indicator** – Displays when a user is typing  
-✅ **Media Sharing** – Supports image and document uploads  
-✅ **Notifications** – Real-time & email notifications (Nodemailer)  
-✅ **Responsive UI** – Clean and modern interface  
+✅ User Authentication – Secure login & registration
+✅ Real-Time Feedback – Submit and view feedback instantly using Socket.IO
+✅ Live Updates – See new feedback from others in real time
+✅ Responsive Design – Modern and clean user interface
 
 ---
 
@@ -20,10 +17,7 @@ This app allows users to chat in real-time, share media, and receive notificatio
 - **Frontend**: React.js, Tailwind CSS , Bootstrap
 - **Backend**: Node.js, Express.js  
 - **Database**: MongoDB  
-- **Real-Time**: Socket.IO  
 - **Authentication**: bcrypt  
-- **File Uploads**: Multer 
-- **Deployment**: AWS (EC2 / Elastic Beanstalk)  
 
 ---
 
