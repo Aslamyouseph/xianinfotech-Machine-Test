@@ -38,7 +38,16 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
         {/* Brand Name */}
-        <Link to="/" className="text-2xl font-bold tracking-wide">
+        <Link
+          to="/"
+          className="text-2xl font-bold tracking-wide"
+          style={{
+            color: "white",
+            textDecoration: "none",
+            fontFamily: "Arial, sans-serif",
+            fontSize: "23px",
+          }}
+        >
           Client <span className="text-yellow-400">Feedback Portal</span>
         </Link>
         {/* TODO:Desktop Navigation  setup */}
@@ -46,7 +55,12 @@ const Navbar = () => {
           <li>
             <Link
               to="/profile"
-              className="hover:text-yellow-300 transition duration-300"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontFamily: "Arial, sans-serif",
+                fontSize: "23px",
+              }}
             >
               Account
             </Link>
@@ -54,7 +68,12 @@ const Navbar = () => {
           <li>
             <Link
               to="/login"
-              className="hover:text-yellow-300 transition duration-300"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontFamily: "Arial, sans-serif",
+                fontSize: "23px",
+              }}
             >
               Login
             </Link>
@@ -83,8 +102,13 @@ const Navbar = () => {
           <li>
             <Link
               to="/profile"
-              className="block py-2 hover:text-yellow-300"
               onClick={() => setIsMenuOpen(false)}
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontFamily: "Arial, sans-serif",
+                fontSize: "23px",
+              }}
             >
               Account
             </Link>
@@ -92,7 +116,12 @@ const Navbar = () => {
           <li>
             <Link
               to="/login"
-              className="hover:text-yellow-300 transition duration-300"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontFamily: "Arial, sans-serif",
+                fontSize: "23px",
+              }}
             >
               Login
             </Link>

@@ -16,7 +16,16 @@ function HomeDesign() {
     <div>
       <nav className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold tracking-wide">
+          <Link
+            to="/"
+            className="text-2xl font-bold tracking-wide"
+            style={{
+              color: "white",
+              textDecoration: "none",
+              fontFamily: "Arial, sans-serif",
+              fontSize: "23px",
+            }}
+          >
             Client Feedback Portal -{" "}
             <span className="text-yellow-400">Admin</span>
           </Link>
@@ -26,19 +35,17 @@ function HomeDesign() {
             <li>
               <Link
                 to="/Respond"
-                className="hover:text-yellow-300 transition duration-300"
+                style={{
+                  color: "white",
+                  textDecoration: "none",
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "23px",
+                }}
               >
                 View Feedback
               </Link>
             </li>
-            <li>
-              <Link
-                to="/RespondToFeedback"
-                className="hover:text-yellow-300 transition duration-300"
-              >
-                Respond to Feedback
-              </Link>
-            </li>
+
             <li>
               <button
                 onClick={handleLogout}
@@ -64,19 +71,15 @@ function HomeDesign() {
             <li>
               <Link
                 to="/Respond"
-                className="block py-2 hover:text-yellow-300"
+                style={{
+                  color: "white",
+                  textDecoration: "none",
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "23px",
+                }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 View Feedback
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/RespondToFeedback"
-                className="block py-2 hover:text-yellow-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Respond to Feedback
               </Link>
             </li>
             <li>

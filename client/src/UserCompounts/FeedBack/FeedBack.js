@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./FeedBack.css";
+// import { SearchContext } from "../../SearchContext.js";
 
 const FeedbackForm = () => {
+  // const { search, setSearch } = useContext(SearchContext);
   const [feedback, setFeedback] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -13,7 +15,6 @@ const FeedbackForm = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
   // Fetch session info
   useEffect(() => {
     const checkLoginStatus = async () => {

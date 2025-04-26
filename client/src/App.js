@@ -48,7 +48,7 @@ function App() {
         {/* //TODO: Admin Pages */}
         <Route path="/AdminHome" element={<AdminHome />} />
         <Route path="/Respond" element={<Respond />} />
-        <Route path="/RespondToFeedback" element={<RespondToFeedback />} />
+        <Route path="/RespondToFeedback/:id" element={<RespondToFeedback />} />
       </Routes>
     </div>
   );

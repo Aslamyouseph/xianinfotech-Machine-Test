@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ViewFeedback.css";
+import { Link } from "react-router-dom";
 
 function ViewFeedback() {
   const [feedback, setFeedback] = useState([]);
@@ -98,6 +99,14 @@ function ViewFeedback() {
                   >
                     {deletingId === item._id ? "Deleting..." : "Delete"}
                   </button>
+                  <br />
+                  <br />
+                  <Link
+                    to={`/RespondToFeedback/${item._id}`}
+                    className="update-btn"
+                  >
+                    Respond to Feedback
+                  </Link>
                 </td>
               </tr>
             ))}
