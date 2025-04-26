@@ -1,167 +1,73 @@
-/* Container Styling */
-.feedback-container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Form Styling */
-.feedback-form {
+.feedback-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+  padding: 20px;
 }
 
-.feedback-form h1 {
-  text-align: center;
-  font-size: 28px;
-  color: #222;
-  margin-bottom: 10px;
+.feedback-form-section,
+.feedback-list-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.feedback-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-form h2,
+.feedback-list-section h2 {
+  margin-bottom: 15px;
 }
 
 .feedback-form label {
-  font-weight: 600;
-  color: #333;
+  display: block;
+  margin-top: 10px;
 }
 
 .feedback-form input,
 .feedback-form select,
 .feedback-form textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-}
-
-.feedback-form input:focus,
-.feedback-form select:focus,
-.feedback-form textarea:focus {
-  border-color: #007bff;
-  outline: none;
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 .feedback-form button {
   background-color: #007bff;
   color: white;
-  padding: 12px;
+  padding: 10px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s;
+  border-radius: 5px;
 }
 
-.feedback-form button:hover {
-  background-color: #0056b3;
-}
-
-/* Messages */
-.success-message {
-  color: green;
-  font-weight: bold;
-  text-align: center;
-}
-
-.error-message {
-  color: red;
-  font-weight: bold;
-  text-align: center;
-}
-
-/* Table Styling */
 .table-container-News {
   overflow-x: auto;
-  margin-top: 40px;
-}
-
-.table-container-News h1 {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 12px;
-  overflow: hidden;
+  margin-top: 10px;
 }
 
-th,
-td {
-  padding: 14px;
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 8px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
 }
 
-thead {
-  background-color: #007bff;
-  color: white;
+.success-message {
+  color: green;
 }
 
-tr:hover {
-  background-color: #f1f1f1;
-}
-/* Responsive */
-@media (max-width: 768px) {
-  .feedback-container {
-    padding: 20px;
-  }
-
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
-
-  thead {
-    display: none;
-  }
-
-  tr {
-    margin-bottom: 20px;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-  }
-
-  td {
-    position: relative;
-    padding-left: 50%;
-    white-space: pre-wrap;
-  }
-
-  td::before {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 45%;
-    white-space: nowrap;
-    font-weight: bold;
-  }
-
-  td:nth-child(1)::before {
-    content: "Date";
-  }
-  td:nth-child(2)::before {
-    content: "Name";
-  }
-  td:nth-child(3)::before {
-    content: "Email";
-  }
-  td:nth-child(4)::before {
-    content: "Rating";
-  }
-  td:nth-child(5)::before {
-    content: "Message";
-  }
+.error-message {
+  color: red;
 }

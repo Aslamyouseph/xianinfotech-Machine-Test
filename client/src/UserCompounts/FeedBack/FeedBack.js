@@ -1,21 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import "./FeedBack.css";
-// import { SearchContext } from "../../SearchContext.js";
 
-const FeedbackForm = () => {
-  // const { search, setSearch } = useContext(SearchContext);
-  const [feedback, setFeedback] = useState([]);
+const FeedbackPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     rating: "",
     message: "",
   });
-
+  const [feedbackList, setFeedbackList] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  // Fetch session info
+
+  // Check login and get user data
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -26,7 +24,6 @@ const FeedbackForm = () => {
         const data = await res.json();
         if (data.isLoggedIn) {
           setIsLoggedIn(true);
-          // Update formData with session user
           setFormData((prev) => ({
             ...prev,
             name: data.user.name,
@@ -34,26 +31,44 @@ const FeedbackForm = () => {
           }));
         }
       } catch (error) {
-        console.error("Error checking login status:", error);
+        console.error("Login check error:", error);
       }
     };
     checkLoginStatus();
   }, []);
 
+  // Fetch feedback list
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/getFeedBack", {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await res.json();
+        console.log("Feedback data:", data.Feedback); // Debug log
+        setFeedbackList(data.Feedback || []);
+      } catch (err) {
+        console.error("Error fetching feedback:", err);
+      }
+    };
+    fetchFeedback();
+  }, []);
+
+  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!formData.rating || !formData.message) {
-      setError("Please fill all required fields.");
+      setFormError("Please fill in all required fields.");
       return;
     }
 
@@ -64,149 +79,131 @@ const FeedbackForm = () => {
         credentials: "include",
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
-
       if (res.ok) {
-        setSuccessMessage("Your Feedback has been submitted successfully");
-        setFormData({
-          name: formData.name,
-          email: formData.email,
-          rating: "",
-          message: "",
-        });
-        setError("");
+        setSuccessMessage("Feedback submitted successfully.");
+        setFormError("");
+        setFormData((prev) => ({ ...prev, rating: "", message: "" }));
+        setFeedbackList((prev) => [data.feedback, ...prev]);
       } else {
-        setError(data.message || "Something went wrong. Please try again.");
+        setFormError(data.message || "Submission failed.");
       }
     } catch (error) {
-      console.error("Error:", error);
-      setError("Failed to submit feedback. ");
+      console.error("Submit error:", error);
+      setFormError("Something went wrong.");
     }
   };
-  // Fetch Feedback from the backend
-  useEffect(() => {
-    const fetchFeedbackDetails = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/admin/getFeedBack", {
-          method: "GET",
-          credentials: "include",
-        });
 
-        if (!res.ok) throw new Error("Failed to fetch feedback.");
-
-        const data = await res.json();
-        setFeedback(data.Feedback || []);
-      } catch (err) {
-        console.error("Error:", err);
-        setError("Something went wrong. Please try again.");
-      }
-    };
-
-    fetchFeedbackDetails();
-  }, []);
   return (
-    <div className="feedback-container">
-      <form className="feedback-form" onSubmit={handleSubmit}>
-        {error && <p className="error-message">{error}</p>}
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        <h1
+    <div className="feedback-wrapper">
+      {/* Feedback Form */}
+      <div className="feedback-form-section">
+        <form className="feedback-form" onSubmit={handleSubmit}>
+          <h2
+            style={{
+              textAlign: "center",
+              color: "#f01111",
+              fontFamily: "cursive",
+            }}
+          >
+            Submit Your Feedback
+          </h2>
+          {formError && <p className="error-message">{formError}</p>}
+          {successMessage && (
+            <p className="success-message">{successMessage}</p>
+          )}
+
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            readOnly
+            required
+          />
+
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            readOnly
+            required
+          />
+
+          <label>Rating:</label>
+          <select
+            name="rating"
+            value={formData.rating}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Rating</option>
+            <option value="5">🌟🌟🌟🌟🌟 - Excellent</option>
+            <option value="4">🌟🌟🌟🌟 - Good</option>
+            <option value="3">🌟🌟🌟 - Average</option>
+            <option value="2">🌟🌟 - Poor</option>
+            <option value="1">🌟 - Very Poor</option>
+          </select>
+
+          <label>Message:</label>
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      {/* Feedback List */}
+      <div className="feedback-list-section">
+        <h2
           style={{
             textAlign: "center",
-            fontFamily: "serif",
-            color: "Red",
-            fontSize: "40px",
+            color: "#f01111",
+            fontFamily: "cursive",
           }}
         >
-          Client Feedback Portal
-        </h1>
-
-        <label>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          readOnly
-          required
-        />
-
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          readOnly
-          required
-        />
-
-        <label>Rating:</label>
-        <select
-          name="rating"
-          value={formData.rating}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Choose...</option>
-          <option value="5">🌟🌟🌟🌟🌟 - Excellent</option>
-          <option value="4">🌟🌟🌟🌟 - Good</option>
-          <option value="3">🌟🌟🌟 - Average</option>
-          <option value="2">🌟🌟 - Poor</option>
-          <option value="1">🌟 - Very Poor</option>
-        </select>
-
-        <label>Message:</label>
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          required
-        ></textarea>
-
-        <button type="submit">Submit</button>
-      </form>
-      <br />
-      <br />
-      <br />
-      <br />
-      <h1
-        style={{
-          textAlign: "center",
-          fontFamily: "serif",
-          color: "green",
-          fontSize: "40px",
-        }}
-      >
-        Feedback List
-      </h1>
-      <div className="table-container-News">
-        <br />
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Rating</th>
-              <th>Message</th>
-            </tr>
-          </thead>
-          <tbody>
-            {feedback.map((item, index) => (
-              <tr key={item._id}>
-                <td>{new Date(item.createdAt).toLocaleString()}</td>
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>⭐ {item.rating}</td>
-                <td>{item.message}</td>
+          Client Feedbacks
+        </h2>
+        <div className="table-container-News">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Rating</th>
+                <th>Message</th>
+                <th>Admin Reply</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {feedbackList.map((item, index) => {
+                if (!item) return null;
+                const createdAt = item.createdAt
+                  ? new Date(item.createdAt).toLocaleString()
+                  : "N/A";
+                return (
+                  <tr key={item._id || index}>
+                    <td>{createdAt}</td>
+                    <td>{item.name || "N/A"}</td>
+                    <td>{item.email || "N/A"}</td>
+                    <td>⭐ {item.rating || "0"}</td>
+                    <td>{item.message || "-"}</td>
+                    <td>{item.response || "-"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
 };
 
-export default FeedbackForm;
+export default FeedbackPage;
