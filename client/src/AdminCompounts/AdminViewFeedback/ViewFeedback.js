@@ -78,7 +78,8 @@ function ViewFeedback() {
               <th>Name</th>
               <th>Email</th>
               <th>Rating</th>
-              <th>Message</th>
+              <th>Message From User</th>
+              <th>Respond By Admin</th>
               <th>Operations</th>
             </tr>
           </thead>
@@ -91,6 +92,7 @@ function ViewFeedback() {
                 <td>{item.email}</td>
                 <td>⭐ {item.rating}</td>
                 <td>{item.message}</td>
+                <td>{item.response}</td>
                 <td>
                   <button
                     className="delete-btn"
