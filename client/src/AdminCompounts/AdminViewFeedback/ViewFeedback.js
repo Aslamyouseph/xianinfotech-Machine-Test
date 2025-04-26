@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./ViewFeedback.css";
 import { Link } from "react-router-dom";
+import { SearchContext } from "../../SearchContext";
 
 function ViewFeedback() {
   const [feedback, setFeedback] = useState([]);
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
+  const { search } = useContext(SearchContext);
 
-  // Fetch Feedback from the backend  Api
+  // Fetch feedback from backend API
   useEffect(() => {
     const fetchFeedbackDetails = async () => {
       try {
@@ -84,34 +86,53 @@ function ViewFeedback() {
             </tr>
           </thead>
           <tbody>
-            {feedback.map((item, index) => (
-              <tr key={item._id}>
-                <td>{index + 1}</td>
-                <td>{new Date(item.createdAt).toLocaleString()}</td>
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>⭐ {item.rating}</td>
-                <td>{item.message}</td>
-                <td>{item.response}</td>
-                <td>
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDelete(item)}
-                    disabled={deletingId === item._id}
-                  >
-                    {deletingId === item._id ? "Deleting..." : "Delete"}
-                  </button>
-                  <br />
-                  <br />
-                  <Link
-                    to={`/RespondToFeedback/${item._id}`}
-                    className="update-btn"
-                  >
-                    Respond to Feedback
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {feedback
+              .filter((item) => {
+                const lowerSearch = search.toLowerCase();
+                return lowerSearch === ""
+                  ? true
+                  : item.name.toLowerCase().includes(lowerSearch) ||
+                      new Date(item.createdAt)
+                        .toLocaleString()
+                        .toLowerCase()
+                        .includes(lowerSearch) ||
+                      item.email.toLowerCase().includes(lowerSearch) ||
+                      item.rating
+                        .toString()
+                        .toLowerCase()
+                        .includes(lowerSearch) ||
+                      item.message.toLowerCase().includes(lowerSearch) ||
+                      (item.response &&
+                        item.response.toLowerCase().includes(lowerSearch));
+              })
+              .map((item, index) => (
+                <tr key={item._id}>
+                  <td>{index + 1}</td>
+                  <td>{new Date(item.createdAt).toLocaleString()}</td>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>⭐ {item.rating}</td>
+                  <td>{item.message}</td>
+                  <td>{item.response}</td>
+                  <td>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(item)}
+                      disabled={deletingId === item._id}
+                    >
+                      {deletingId === item._id ? "Deleting..." : "Delete"}
+                    </button>
+                    <br />
+                    <br />
+                    <Link
+                      to={`/RespondToFeedback/${item._id}`}
+                      className="update-btn"
+                    >
+                      Respond to Feedback
+                    </Link>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

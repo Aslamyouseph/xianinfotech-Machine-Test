@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./FeedBack.css";
+import { SearchContext } from "../../SearchContext";
 
 const FeedbackPage = () => {
   const [formData, setFormData] = useState({
@@ -12,8 +13,9 @@ const FeedbackPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const { search } = useContext(SearchContext);
 
-  // Check login and get user data
+  // Check login status and set user details
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -37,7 +39,7 @@ const FeedbackPage = () => {
     checkLoginStatus();
   }, []);
 
-  // Fetch feedback list
+  // Fetch all feedbacks
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
@@ -46,7 +48,6 @@ const FeedbackPage = () => {
           credentials: "include",
         });
         const data = await res.json();
-        console.log("Feedback data:", data.Feedback); // Debug log
         setFeedbackList(data.Feedback || []);
       } catch (err) {
         console.error("Error fetching feedback:", err);
@@ -55,7 +56,7 @@ const FeedbackPage = () => {
     fetchFeedback();
   }, []);
 
-  // Handle form input change
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -64,11 +65,13 @@ const FeedbackPage = () => {
     }));
   };
 
-  // Submit form
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.rating || !formData.message) {
-      setFormError("Please fill in all required fields.");
+    const { rating, message } = formData;
+
+    if (!rating || !message || ![1, 2, 3, 4, 5].includes(Number(rating))) {
+      setFormError("Please select a valid rating and enter your message.");
       return;
     }
 
@@ -79,7 +82,9 @@ const FeedbackPage = () => {
         credentials: "include",
         body: JSON.stringify(formData),
       });
+
       const data = await res.json();
+
       if (res.ok) {
         setSuccessMessage("Feedback submitted successfully.");
         setFormError("");
@@ -90,9 +95,17 @@ const FeedbackPage = () => {
       }
     } catch (error) {
       console.error("Submit error:", error);
-      setFormError("Something went wrong.");
+      setFormError("Something went wrong. Please try again.");
     }
   };
+
+  // Auto-clear success message
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => setSuccessMessage(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   return (
     <div className="feedback-wrapper">
@@ -102,12 +115,14 @@ const FeedbackPage = () => {
           <h2
             style={{
               textAlign: "center",
-              color: "#f01111",
+              color: "red",
+              fontSize: "30px",
               fontFamily: "cursive",
             }}
           >
             Submit Your Feedback
           </h2>
+
           {formError && <p className="error-message">{formError}</p>}
           {successMessage && (
             <p className="success-message">{successMessage}</p>
@@ -163,7 +178,8 @@ const FeedbackPage = () => {
         <h2
           style={{
             textAlign: "center",
-            color: "#f01111",
+            color: "red",
+            fontSize: "30px",
             fontFamily: "cursive",
           }}
         >
@@ -182,22 +198,37 @@ const FeedbackPage = () => {
               </tr>
             </thead>
             <tbody>
-              {feedbackList.map((item, index) => {
-                if (!item) return null;
-                const createdAt = item.createdAt
-                  ? new Date(item.createdAt).toLocaleString()
-                  : "N/A";
-                return (
-                  <tr key={item._id || index}>
-                    <td>{createdAt}</td>
-                    <td>{item.name || "N/A"}</td>
-                    <td>{item.email || "N/A"}</td>
-                    <td>⭐ {item.rating || "0"}</td>
-                    <td>{item.message || "-"}</td>
-                    <td>{item.response || "-"}</td>
-                  </tr>
-                );
-              })}
+              {feedbackList
+                .filter((item) => {
+                  const lowerSearch = search.toLowerCase();
+                  return lowerSearch === ""
+                    ? true
+                    : item.name?.toLowerCase().includes(lowerSearch) ||
+                        new Date(item.createdAt)
+                          .toLocaleString()
+                          .toLowerCase()
+                          .includes(lowerSearch) ||
+                        item.email?.toLowerCase().includes(lowerSearch) ||
+                        item.rating?.toString().includes(lowerSearch) ||
+                        item.message?.toLowerCase().includes(lowerSearch) ||
+                        item.response?.toLowerCase().includes(lowerSearch);
+                })
+                .map((item, index) => {
+                  if (!item) return null;
+                  const createdAt = item.createdAt
+                    ? new Date(item.createdAt).toLocaleString()
+                    : "N/A";
+                  return (
+                    <tr key={item._id || index}>
+                      <td>{createdAt}</td>
+                      <td>{item.name || "N/A"}</td>
+                      <td>{item.email || "N/A"}</td>
+                      <td>⭐ {item.rating || "0"}</td>
+                      <td>{item.message || "-"}</td>
+                      <td>{item.response || "-"}</td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>

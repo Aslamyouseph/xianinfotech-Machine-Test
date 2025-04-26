@@ -8,7 +8,7 @@ function ChatApp() {
     <div>
       {/*This is used to import the Navigation bar page*/}
       <Navbar />
-      {/* <SearchBar /> This is used to import the Search bar  */}
+      <SearchBar />
       <FeedBack />
     </div>
   );
