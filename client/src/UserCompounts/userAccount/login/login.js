@@ -95,6 +95,13 @@ const Login = () => {
           <Link to="/signup" className="text-blue-500 hover:underline">
             Sign Up
           </Link>
+          <br />
+          <h5 style={{ marginTop: "20px", color: "red" }}>
+            Admin Email : admin@gmail.com
+          </h5>
+          <h5 style={{ marginTop: "10px", color: "red" }}>
+            Admin Password : 123123
+          </h5>
         </p>
       </div>
     </div>
